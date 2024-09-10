@@ -1,15 +1,17 @@
 #!/bin/bash
 
-# Check if three arguments are provided
-if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 <dev_name> <dev_ssh> <server_name>"
+# Check if two arguments are provided
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <dev_name> <server_name>"
     exit 1
 fi
 
 # Store arguments in variables
 dev_name=$1
-dev_ssh=$2
-server_name=$3
+server_name=$2
+
+# Prompt for the SSH key
+read -p "Please enter the SSH key for $dev_name: " dev_ssh
 
 # Add a new user
 sudo adduser $dev_name
@@ -31,10 +33,7 @@ echo "$dev_ssh" > authorized_keys
 chmod 600 authorized_keys
 chmod 700 ~/.ssh
 
-# Append 'sudo su - <server_name>' to .bashrc
+# Append 'sudo su - $server_name' to .bashrc
 echo "sudo su - $server_name" >> ~/.bashrc
 
 EOF
-
-# Return to the previous user (optional)
-sudo su - $server_name
