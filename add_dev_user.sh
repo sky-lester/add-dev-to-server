@@ -13,11 +13,11 @@ server_name=$2
 # Prompt for the SSH key
 read -p "Please enter the SSH key for $dev_name: " dev_ssh
 
-# Add a new user
-sudo adduser $dev_name
+# Add a new user without a password
+sudo useradd -m -s /bin/bash $dev_name
 
-# Add the user to the wheel group (sudo group)
-sudo usermod -aG wheel $dev_name
+# Add the user to the sudo group
+sudo usermod -aG sudo $dev_name
 
 # Grant passwordless sudo access
 echo "$dev_name ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$dev_name
